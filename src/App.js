@@ -1,24 +1,45 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { Switch, Route, useLocation } from "react-router-dom";
+
+// Icons
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { fab } from "@fortawesome/free-brands-svg-icons";
+
+// Framer Motion
+import { AnimatePresence } from "framer-motion";
+
+// Components
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+
+// Pages
+import Home from "./pages/Home";
+import Projects from "./pages/Projects";
+import Skills from "./pages/Skills";
+import ErrorPage from "./pages/ErrorPage";
+import Contact from "./pages/Contact";
+import SingleProject from "./pages/SingleProject";
+import Resume from "./pages/Resume";
 
 function App() {
+  library.add(fab);
+  const location = useLocation();
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Navbar />
+      <AnimatePresence exitBeforeEnter>
+        <Switch location={location} key={location.pathname}>
+          <Route exact path="/" component={Home} />
+          <Route path="/skills" component={Skills} />
+          <Route exact path="/projects" component={Projects} />
+          <Route path="/projects/:id" component={SingleProject} />
+          <Route path="/resume" component={Resume} />
+          <Route path="/contact" component={Contact} />
+          <Route component={ErrorPage} />
+        </Switch>
+      </AnimatePresence>
+      <Footer />
+    </>
   );
 }
 
